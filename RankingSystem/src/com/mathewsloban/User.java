@@ -27,14 +27,18 @@ class User {
 
     public void incProgress(int rankActivities) {
         if (arrayListRank.indexOf(rankActivities) == -1) {
-            System.out.println("Invalid rank activities.");
-            return;
+            try {
+                throw new Exception("Invalid rank activities.");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         this.progresPointCalculation(rankActivities);
         this.checkUpdateRank();
     }
 
     private void progresPointCalculation(int rankActivities) {
+        if (this.currentRank == 8) return;
         int rankDiff = this.arrayListRank.indexOf(rankActivities) - this.arrayListRank.indexOf(this.currentRank);
         if (rankDiff <= -2) return;
         if (rankDiff == 0) this.currentProgress += 3;
@@ -48,7 +52,7 @@ class User {
                 this.currentProgress = 0;
                 System.out.println("Your rank is max.");
             }
-            if (this.currentProgress >= 100 && this.currentRank <= 7) {
+            if (this.currentProgress >= 100 && this.currentRank < 7) {
                 this.currentProgress = this.currentProgress - 100;
                 this.currentRank = this.arrayListRank.get(this.arrayListRank.indexOf(this.currentRank) + 1);
             }
